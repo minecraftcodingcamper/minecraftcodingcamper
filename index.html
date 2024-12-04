@@ -1,1 +1,125 @@
-<p> ohio skibidi rizz </p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Minecraft Structure Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        .snippet {
+            margin-bottom: 20px;
+        }
+        button {
+            display: inline-block;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dynamic Minecraft Structure Tutorial</h1>
+        <p>Welcome to the Minecraft coding tutorial! Follow the steps below to create a dynamic structure in Minecraft Education. Each step includes a code snippet you can copy and paste into MakeCode.</p>
+        
+        <h2>Step 1: Register a Chat Command</h2>
+        <p>First, let’s create a chat command so Minecraft knows when to run our code. Add the following code:</p>
+        <div class="snippet">
+            <pre><code>def on_on_chat():
+    pass
+
+player.on_chat("run", on_on_chat)</code></pre>
+        </div>
+        <button onclick="copySnippet(0)">Copy Code</button>
+
+        <h2>Step 2: Build a Pillar</h2>
+        <p>Now, let’s create a function to build a single pillar. Add this code inside your <code>on_on_chat</code> function:</p>
+        <div class="snippet">
+            <pre><code>def build_pillar(x, z):
+    blocks.place(POLISHED_BLACKSTONE, pos(x, 0, z))
+    blocks.place(BLACKSTONE_WALL, pos(x, 1, z))
+    blocks.place(OAK_FENCE, pos(x, 2, z))
+    blocks.place(POLISHED_BLACKSTONE, pos(x, 3, z))</code></pre>
+        </div>
+        <button onclick="copySnippet(1)">Copy Code</button>
+
+        <h2>Step 3: Add Multiple Pillars</h2>
+        <p>Let’s place four pillars to form the corners of a square:</p>
+        <div class="snippet">
+            <pre><code>build_pillar(1, 0)
+build_pillar(11, 0)
+build_pillar(1, 10)
+build_pillar(11, 10)</code></pre>
+        </div>
+        <button onclick="copySnippet(2)">Copy Code</button>
+
+        <h2>Step 4: Connect the Pillars with Glass</h2>
+        <p>Create a function to connect the pillars with glass:</p>
+        <div class="snippet">
+            <pre><code>def connect_with_glass(x1, z1, x2, z2):
+    if x1 == x2:
+        z3 = min(z1, z2) + 1
+        while z3 < max(z1, z2):
+            blocks.place(GLASS, pos(x1, 3, z3))
+            z3 += 1
+    elif z1 == z2:
+        x3 = min(x1, x2) + 1
+        while x3 < max(x1, x2):
+            blocks.place(GLASS, pos(x3, 3, z1))
+            x3 += 1</code></pre>
+        </div>
+        <button onclick="copySnippet(3)">Copy Code</button>
+
+        <h2>Step 5: Fill the Center</h2>
+        <p>Finally, fill the center with <code>BIG_DRIPLEAF</code>:</p>
+        <div class="snippet">
+            <pre><code>blocks.fill(
+    BIG_DRIPLEAF,
+    pos(2, 0, 1),
+    pos(10, 1, 9),
+    FillOperation.REPLACE)</code></pre>
+        </div>
+        <button onclick="copySnippet(4)">Copy Code</button>
+    </div>
+    <script>
+        const snippets = document.querySelectorAll("pre code");
+        function copySnippet(index) {
+            navigator.clipboard.writeText(snippets[index].innerText).then(() => {
+                alert("Code copied to clipboard!");
+            });
+        }
+    </script>
+</body>
+</html>
