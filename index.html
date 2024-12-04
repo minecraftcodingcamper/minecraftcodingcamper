@@ -20,7 +20,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        h1, h2 {
+        h1, h2, h3 {
             color: #333;
         }
         pre {
@@ -51,15 +51,19 @@
             color: #e63946;
             font-weight: bold;
         }
+        .engagement {
+            font-style: italic;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Dynamic Minecraft Structure Tutorial</h1>
-        <p>Follow this step-by-step guide to create a dynamic Minecraft structure in MakeCode. Copy each snippet and test it in Minecraft Education.</p>
-        
-        <h2>Step 1: Create a Chat Command</h2>
-        <p>Press <span class="highlight">T</span> in Minecraft to open the chat and type <code>run</code> to trigger your program. First, register the chat command:</p>
+        <p>Welcome to the Minecraft coding tutorial! Follow the steps below to build a dynamic structure in Minecraft Education.</p>
+
+        <h2>Step 1: Create the Chat Command</h2>
+        <p>Press <span class="highlight">T</span> in Minecraft to open the chat, and type <code>run</code>. This command will trigger our code. Start by adding this:</p>
         <div class="snippet">
             <pre><code>def on_on_chat():
     pass
@@ -67,33 +71,31 @@
 player.on_chat("run", on_on_chat)</code></pre>
         </div>
         <button onclick="copySnippet(0)">Copy Code</button>
+        <p class="engagement">What do you think will happen when we type <code>run</code> in the game? Test it out!</p>
 
         <h2>Step 2: Set Up the Base</h2>
-        <p>Define the base position and size of your structure. Paste this inside the <code>on_on_chat</code> function:</p>
+        <p>Now, define the size of your structure and where it will appear in the game. Add this inside the chat command:</p>
         <div class="snippet">
-            <pre><code># Set the size of the structure dynamically
-size = 10  # Adjust this value to change the size of the structure
-
-# Define the base position of the structure
-base_x = 1
-base_y = 0
-base_z = 0</code></pre>
+            <pre><code>size = 10  # Change this to adjust the size
+base_x, base_y, base_z = 1, 0, 0</code></pre>
         </div>
         <button onclick="copySnippet(1)">Copy Code</button>
+        <p class="engagement">What happens if you make <code>size</code> bigger? Predict where the structure will appear!</p>
 
         <h2>Step 3: Build a Pillar</h2>
-        <p>Create a function to build a pillar. Add this snippet inside the <code>on_on_chat</code> function:</p>
+        <p>Create a function to build a single pillar. Paste this inside the chat command:</p>
         <div class="snippet">
             <pre><code>def build_pillar(x, z):
-    blocks.place(POLISHED_BLACKSTONE, pos(x, base_y, z))  # Bottom block
-    blocks.place(BLACKSTONE_WALL, pos(x, base_y + 1, z))  # Middle wall
-    blocks.place(OAK_FENCE, pos(x, base_y + 2, z))        # Fence
-    blocks.place(POLISHED_BLACKSTONE, pos(x, base_y + 3, z))  # Top block</code></pre>
+    blocks.place(POLISHED_BLACKSTONE, pos(x, base_y, z))
+    blocks.place(BLACKSTONE_WALL, pos(x, base_y + 1, z))
+    blocks.place(OAK_FENCE, pos(x, base_y + 2, z))
+    blocks.place(POLISHED_BLACKSTONE, pos(x, base_y + 3, z))</code></pre>
         </div>
         <button onclick="copySnippet(2)">Copy Code</button>
+        <p class="engagement">What kind of blocks would YOU use for your pillar? Customize it and try it out!</p>
 
         <h2>Step 4: Place Pillars</h2>
-        <p>Call the <code>build_pillar</code> function to add four pillars at the corners of the structure:</p>
+        <p>Call the <code>build_pillar</code> function to place four pillars in a square:</p>
         <div class="snippet">
             <pre><code>build_pillar(base_x, base_z)
 build_pillar(base_x + size, base_z)
@@ -101,9 +103,10 @@ build_pillar(base_x, base_z + size)
 build_pillar(base_x + size, base_z + size)</code></pre>
         </div>
         <button onclick="copySnippet(3)">Copy Code</button>
+        <p class="engagement">Can you predict where the four pillars will appear? Let’s see if you’re right!</p>
 
-        <h2>Step 5: Connect the Pillars with Glass</h2>
-        <p>Create a function to connect pillars with glass:</p>
+        <h2>Step 5: Connect the Pillars</h2>
+        <p>Create a function to connect the pillars with glass:</p>
         <div class="snippet">
             <pre><code>def connect_with_glass(x1, z1, x2, z2):
     if x1 == x2:  # Vertical connection
@@ -118,35 +121,34 @@ build_pillar(base_x + size, base_z + size)</code></pre>
             x3 += 1</code></pre>
         </div>
         <button onclick="copySnippet(4)">Copy Code</button>
-        <p>Now call the function to connect all the pillars:</p>
+        <p>Now call the function to connect all sides:</p>
         <div class="snippet">
-            <pre><code>connect_with_glass(base_x, base_z, base_x + size, base_z)         # Top side
-connect_with_glass(base_x, base_z + size, base_x + size, base_z + size)  # Bottom side
-connect_with_glass(base_x, base_z, base_x, base_z + size)         # Left side
-connect_with_glass(base_x + size, base_z, base_x + size, base_z + size)  # Right side</code></pre>
+            <pre><code>connect_with_glass(base_x, base_z, base_x + size, base_z)
+connect_with_glass(base_x, base_z + size, base_x + size, base_z + size)
+connect_with_glass(base_x, base_z, base_x, base_z + size)
+connect_with_glass(base_x + size, base_z, base_x + size, base_z + size)</code></pre>
         </div>
         <button onclick="copySnippet(5)">Copy Code</button>
+        <p class="engagement">What happens if you use a different block instead of glass? Try it out!</p>
 
         <h2>Step 6: Fill the Center</h2>
-        <p>Fill the inner area of the square with <code>BIG_DRIPLEAF</code>:</p>
+        <p>Decorate the middle of the square with BIG DRIPLEAF:</p>
         <div class="snippet">
             <pre><code>blocks.fill(
-    BIG_DRIPLEAF,  # Block type
-    pos(base_x + 1, base_y, base_z + 1),  # Starting corner
-    pos(base_x + size - 1, base_y + 1, base_z + size - 1),  # Ending corner
+    BIG_DRIPLEAF,
+    pos(base_x + 1, base_y, base_z + 1),
+    pos(base_x + size - 1, base_y + 1, base_z + size - 1),
     FillOperation.REPLACE)</code></pre>
         </div>
         <button onclick="copySnippet(6)">Copy Code</button>
+        <p class="engagement">What other blocks would look cool in the center? Experiment and share your ideas!</p>
 
-        <h2>Step 7: Test the Full Code</h2>
-        <p>Here’s the full code if you want to see it all together. Paste it into MakeCode:</p>
+        <h2>Step 7: Full Code</h2>
+        <p>Here’s the complete code to copy and run in MakeCode:</p>
         <div class="snippet">
             <pre><code>def on_on_chat():
-    # Set the size of the structure dynamically
     size = 10
-    base_x = 1
-    base_y = 0
-    base_z = 0
+    base_x, base_y, base_z = 1, 0, 0
 
     def build_pillar(x, z):
         blocks.place(POLISHED_BLACKSTONE, pos(x, base_y, z))
@@ -186,7 +188,9 @@ connect_with_glass(base_x + size, base_z, base_x + size, base_z + size)  # Right
 player.on_chat("run", on_on_chat)</code></pre>
         </div>
         <button onclick="copySnippet(7)">Copy Code</button>
+        <p class="engagement">Now, press T in Minecraft, type <code>run</code>, and watch your structure come to life!</p>
     </div>
+
     <script>
         const snippets = document.querySelectorAll("pre code");
         function copySnippet(index) {
