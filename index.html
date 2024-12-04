@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Minecraft Structure Tutorial</title>
+    <title>Minecraft Structure Tutorial</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,15 +47,19 @@
         button:hover {
             background: #555;
         }
+        .highlight {
+            color: #e63946;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Dynamic Minecraft Structure Tutorial</h1>
-        <p>Welcome to the Minecraft coding tutorial! Follow the steps below to create a dynamic structure in Minecraft Education. Each step includes a code snippet you can copy and paste into MakeCode.</p>
+        <p>Follow this step-by-step guide to create a dynamic Minecraft structure in MakeCode. Copy each snippet and test it in Minecraft Education.</p>
         
-        <h2>Step 1: Register a Chat Command</h2>
-        <p>First, let’s create a chat command so Minecraft knows when to run our code. Add the following code:</p>
+        <h2>Step 1: Create a Chat Command</h2>
+        <p>Press <span class="highlight">T</span> in Minecraft to open the chat and type <code>run</code> to trigger your program. First, register the chat command:</p>
         <div class="snippet">
             <pre><code>def on_on_chat():
     pass
@@ -64,54 +68,124 @@ player.on_chat("run", on_on_chat)</code></pre>
         </div>
         <button onclick="copySnippet(0)">Copy Code</button>
 
-        <h2>Step 2: Build a Pillar</h2>
-        <p>Now, let’s create a function to build a single pillar. Add this code inside your <code>on_on_chat</code> function:</p>
+        <h2>Step 2: Set Up the Base</h2>
+        <p>Define the base position and size of your structure. Paste this inside the <code>on_on_chat</code> function:</p>
         <div class="snippet">
-            <pre><code>def build_pillar(x, z):
-    blocks.place(POLISHED_BLACKSTONE, pos(x, 0, z))
-    blocks.place(BLACKSTONE_WALL, pos(x, 1, z))
-    blocks.place(OAK_FENCE, pos(x, 2, z))
-    blocks.place(POLISHED_BLACKSTONE, pos(x, 3, z))</code></pre>
+            <pre><code># Set the size of the structure dynamically
+size = 10  # Adjust this value to change the size of the structure
+
+# Define the base position of the structure
+base_x = 1
+base_y = 0
+base_z = 0</code></pre>
         </div>
         <button onclick="copySnippet(1)">Copy Code</button>
 
-        <h2>Step 3: Add Multiple Pillars</h2>
-        <p>Let’s place four pillars to form the corners of a square:</p>
+        <h2>Step 3: Build a Pillar</h2>
+        <p>Create a function to build a pillar. Add this snippet inside the <code>on_on_chat</code> function:</p>
         <div class="snippet">
-            <pre><code>build_pillar(1, 0)
-build_pillar(11, 0)
-build_pillar(1, 10)
-build_pillar(11, 10)</code></pre>
+            <pre><code>def build_pillar(x, z):
+    blocks.place(POLISHED_BLACKSTONE, pos(x, base_y, z))  # Bottom block
+    blocks.place(BLACKSTONE_WALL, pos(x, base_y + 1, z))  # Middle wall
+    blocks.place(OAK_FENCE, pos(x, base_y + 2, z))        # Fence
+    blocks.place(POLISHED_BLACKSTONE, pos(x, base_y + 3, z))  # Top block</code></pre>
         </div>
         <button onclick="copySnippet(2)">Copy Code</button>
 
-        <h2>Step 4: Connect the Pillars with Glass</h2>
-        <p>Create a function to connect the pillars with glass:</p>
+        <h2>Step 4: Place Pillars</h2>
+        <p>Call the <code>build_pillar</code> function to add four pillars at the corners of the structure:</p>
         <div class="snippet">
-            <pre><code>def connect_with_glass(x1, z1, x2, z2):
-    if x1 == x2:
-        z3 = min(z1, z2) + 1
-        while z3 < max(z1, z2):
-            blocks.place(GLASS, pos(x1, 3, z3))
-            z3 += 1
-    elif z1 == z2:
-        x3 = min(x1, x2) + 1
-        while x3 < max(x1, x2):
-            blocks.place(GLASS, pos(x3, 3, z1))
-            x3 += 1</code></pre>
+            <pre><code>build_pillar(base_x, base_z)
+build_pillar(base_x + size, base_z)
+build_pillar(base_x, base_z + size)
+build_pillar(base_x + size, base_z + size)</code></pre>
         </div>
         <button onclick="copySnippet(3)">Copy Code</button>
 
-        <h2>Step 5: Fill the Center</h2>
-        <p>Finally, fill the center with <code>BIG_DRIPLEAF</code>:</p>
+        <h2>Step 5: Connect the Pillars with Glass</h2>
+        <p>Create a function to connect pillars with glass:</p>
         <div class="snippet">
-            <pre><code>blocks.fill(
-    BIG_DRIPLEAF,
-    pos(2, 0, 1),
-    pos(10, 1, 9),
-    FillOperation.REPLACE)</code></pre>
+            <pre><code>def connect_with_glass(x1, z1, x2, z2):
+    if x1 == x2:  # Vertical connection
+        z3 = min(z1, z2) + 1
+        while z3 < max(z1, z2):
+            blocks.place(GLASS, pos(x1, base_y + 3, z3))
+            z3 += 1
+    elif z1 == z2:  # Horizontal connection
+        x3 = min(x1, x2) + 1
+        while x3 < max(x1, x2):
+            blocks.place(GLASS, pos(x3, base_y + 3, z1))
+            x3 += 1</code></pre>
         </div>
         <button onclick="copySnippet(4)">Copy Code</button>
+        <p>Now call the function to connect all the pillars:</p>
+        <div class="snippet">
+            <pre><code>connect_with_glass(base_x, base_z, base_x + size, base_z)         # Top side
+connect_with_glass(base_x, base_z + size, base_x + size, base_z + size)  # Bottom side
+connect_with_glass(base_x, base_z, base_x, base_z + size)         # Left side
+connect_with_glass(base_x + size, base_z, base_x + size, base_z + size)  # Right side</code></pre>
+        </div>
+        <button onclick="copySnippet(5)">Copy Code</button>
+
+        <h2>Step 6: Fill the Center</h2>
+        <p>Fill the inner area of the square with <code>BIG_DRIPLEAF</code>:</p>
+        <div class="snippet">
+            <pre><code>blocks.fill(
+    BIG_DRIPLEAF,  # Block type
+    pos(base_x + 1, base_y, base_z + 1),  # Starting corner
+    pos(base_x + size - 1, base_y + 1, base_z + size - 1),  # Ending corner
+    FillOperation.REPLACE)</code></pre>
+        </div>
+        <button onclick="copySnippet(6)">Copy Code</button>
+
+        <h2>Step 7: Test the Full Code</h2>
+        <p>Here’s the full code if you want to see it all together. Paste it into MakeCode:</p>
+        <div class="snippet">
+            <pre><code>def on_on_chat():
+    # Set the size of the structure dynamically
+    size = 10
+    base_x = 1
+    base_y = 0
+    base_z = 0
+
+    def build_pillar(x, z):
+        blocks.place(POLISHED_BLACKSTONE, pos(x, base_y, z))
+        blocks.place(BLACKSTONE_WALL, pos(x, base_y + 1, z))
+        blocks.place(OAK_FENCE, pos(x, base_y + 2, z))
+        blocks.place(POLISHED_BLACKSTONE, pos(x, base_y + 3, z))
+
+    def connect_with_glass(x1, z1, x2, z2):
+        if x1 == x2:
+            z3 = min(z1, z2) + 1
+            while z3 < max(z1, z2):
+                blocks.place(GLASS, pos(x1, base_y + 3, z3))
+                z3 += 1
+        elif z1 == z2:
+            x3 = min(x1, x2) + 1
+            while x3 < max(x1, x2):
+                blocks.place(GLASS, pos(x3, base_y + 3, z1))
+                x3 += 1
+
+    build_pillar(base_x, base_z)
+    build_pillar(base_x + size, base_z)
+    build_pillar(base_x, base_z + size)
+    build_pillar(base_x + size, base_z + size)
+
+    connect_with_glass(base_x, base_z, base_x + size, base_z)
+    connect_with_glass(base_x, base_z + size, base_x + size, base_z + size)
+    connect_with_glass(base_x, base_z, base_x, base_z + size)
+    connect_with_glass(base_x + size, base_z, base_x + size, base_z + size)
+
+    blocks.fill(
+        BIG_DRIPLEAF,
+        pos(base_x + 1, base_y, base_z + 1),
+        pos(base_x + size - 1, base_y + 1, base_z + size - 1),
+        FillOperation.REPLACE
+    )
+
+player.on_chat("run", on_on_chat)</code></pre>
+        </div>
+        <button onclick="copySnippet(7)">Copy Code</button>
     </div>
     <script>
         const snippets = document.querySelectorAll("pre code");
